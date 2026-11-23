@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+  UserMapper XML 映射文件
+  namespace 必须和 Mapper 接口全类名一致
+-->
+<mapper namespace="com.example.business_assistant.mapper.UserMapper">
+
+    <!-- 结果映射：数据库下划线字段 -> Java 驼峰字段 -->
+    <resultMap id="UserMap" type="com.example.business_assistant.bean.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="isAdmin" column="is_admin"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <!-- 复用字段列表 -->
+    <sql id="cols">
+        id, username, password, is_admin, created_at
+    </sql>
+
+    <!-- 根据用户名查 -->
+    <select id="selectByUsername" resultMap="UserMap">
+        SELECT <include refid="cols"/>
+        FROM user
+        WHERE username = #{username}
+    </select>
+
+    <!-- 根据 ID 查 -->
+    <select id="selectById" resultMap="UserMap">
+        SELECT <include refid="cols"/>
+        FROM user
+        WHERE id = #{id}
+    </select>
+
+    <!-- 插入新用户，useGeneratedKeys 把自增 ID 回填到对象里 -->
+    <insert id="insert" parameterType="com.example.business_assistant.bean.User"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user (username, password, created_at)
+        VALUES (#{username}, #{password}, NOW())
+    </insert>
+</mapper>

@@ -1,0 +1,32 @@
+# 依赖
+node_modules/
+
+# 构建产物
+target/
+dist/
+build/
+
+# 日志
+logs/
+*.log
+
+# 运行时数据(向量库持久化、上传文件)
+data/
+upload/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# 系统
+.DS_Store
+Thumbs.db
+
+# 压缩包(不上传)
+*.7z
+*.zip
+
+# 临时
+*.tmp
+*.bak

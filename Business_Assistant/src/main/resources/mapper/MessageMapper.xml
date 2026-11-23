@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.business_assistant.mapper.MessageMapper">
+
+    <resultMap id="MessageMap" type="com.example.business_assistant.bean.Message">
+        <id property="id" column="id"/>
+        <result property="conversationId" column="conversation_id"/>
+        <result property="role" column="role"/>
+        <result property="content" column="content"/>
+        <result property="sources" column="sources"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.example.business_assistant.bean.Message"
+            useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO message (conversation_id, role, content, sources, created_at)
+        VALUES (#{conversationId}, #{role}, #{content}, #{sources}, NOW())
+    </insert>
+
+    <select id="selectByConversationId" resultMap="MessageMap">
+        SELECT id, conversation_id, role, content, sources, created_at
+        FROM message
+        WHERE conversation_id = #{conversationId}
+        ORDER BY created_at ASC
+    </select>
+
+    <select id="selectRecentByConversationId" resultMap="MessageMap">
+        SELECT id, conversation_id, role, content, sources, created_at
+        FROM message
+        WHERE conversation_id = #{conversationId}
+        ORDER BY created_at DESC
+        LIMIT #{limit}
+    </select>
+
+    <delete id="deleteByConversationId">
+        DELETE FROM message WHERE conversation_id = #{conversationId}
+    </delete>
+
+    <select id="countAll" resultType="long">
+        SELECT COUNT(*) FROM message
+    </select>
+</mapper>
